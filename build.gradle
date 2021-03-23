@@ -13,6 +13,8 @@ buildscript {
         glideVer = "4.9.0"
         multiDexVer = "1.0.3"
         constraintLayoutVer = "2.0.4"
+        zxingVer = "3.3.2"
+        zxingAndroidEmbeddedVer = "3.6.0" // zxing-android-embedded need buildToolsVersion >= 28.0.3
     }
 
     repositories {

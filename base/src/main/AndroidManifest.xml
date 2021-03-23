@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.gzunion.base">
+
+    <!-- zxing-android-embedded need this -->
+    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
+
+    <!-- for zxing -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- zxing-android-embedded need hardwareAccelerated to be true -->
+    <application
+        android:hardwareAccelerated="true"
+        >
+        <activity android:name=".TestActivity"></activity>
+
+        <!-- 二维码扫描页面竖屏显示 -->
+        <activity android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="fullSensor"
+            tools:replace="android:screenOrientation"
+            />
+    </application>
 
 </manifest>

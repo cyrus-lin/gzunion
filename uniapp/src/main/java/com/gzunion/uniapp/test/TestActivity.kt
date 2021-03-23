@@ -27,11 +27,11 @@ class TestActivity : AppCompatActivity() {
         setContentView(R.layout.activity_test)
         val button1 = findViewById<Button>(R.id.button1)
         button1.setOnClickListener {
-            try {
+            /*try {
                 getInstance().startApp(mContext, "__UNI__04E3A11", MySplashView::class.java)
             } catch (e: Exception) {
                 e.printStackTrace()
-            }
+            }*/
         }
         val button2 = findViewById<Button>(R.id.button2)
         button2.setOnClickListener {
