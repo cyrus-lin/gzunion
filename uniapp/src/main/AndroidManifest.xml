@@ -10,8 +10,11 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         tools:replace="android:extractNativeLibs">
-        <activity android:name="com.gzunion.uniapp.test.TestActivity"></activity>
+        <service
+            android:name="com.gzunion.uniapp.UpgradeService"
+            android:exported="false"></service>
 
+        <activity android:name="com.gzunion.uniapp.test.TestActivity" />
 
         <provider
             android:name="io.dcloud.common.util.DCloud_FileProvider"
