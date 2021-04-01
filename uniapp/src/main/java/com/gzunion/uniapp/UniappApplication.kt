@@ -32,6 +32,8 @@ class UniappApplication : ApplicationLike {
             .build()
         DCUniMPSDK.getInstance().initialize(app, config) { b ->
             Log.i("unimp", "onInitFinished----$b")
+
+
         }
         // 初始化 uni 小程序 SDK ---- end ----------
     }
