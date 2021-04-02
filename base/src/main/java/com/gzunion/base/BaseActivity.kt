@@ -1,6 +1,8 @@
 package com.gzunion.base
 
 import android.app.Activity
+import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -16,6 +18,8 @@ abstract class BaseActivity: AppCompatActivity() {
     private var mRequestCode = 0
 
     private val mRequests = mutableMapOf<Int, ForResultCallback>()
+
+    private var mLoadingDialog: Dialog? = null
 
     fun forResult(intent: Intent, options: Bundle? = null, cb: ForResultCallback) {
         val code = mRequestCode++
@@ -33,6 +37,20 @@ abstract class BaseActivity: AppCompatActivity() {
         } else {
             super.onActivityResult(requestCode, resultCode, data)
         }
+    }
+
+    fun loading() {
+        var d = mLoadingDialog
+        if (d == null || !d.isShowing) {
+            d?.dismiss()
+            d = ProgressDialog.show(this, "", "")
+            mLoadingDialog = d
+        }
+    }
+
+    fun dismissLoading() {
+        mLoadingDialog?.dismiss()
+        mLoadingDialog = null
     }
 
     override fun onDestroy() {

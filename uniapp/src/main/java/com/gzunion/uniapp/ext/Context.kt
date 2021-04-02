@@ -1,9 +1,6 @@
 package com.gzunion.uniapp.ext
 
 import android.content.Context
-import android.util.Log
-import com.alibaba.fastjson.JSON
-import com.gzunion.base.BaseActivity
 import com.gzunion.base.ext.toast
 import com.gzunion.base.utils.e
 import io.dcloud.feature.sdk.DCUniMPSDK
@@ -18,7 +15,7 @@ fun Context.startUniApp(
     try {
         DCUniMPSDK.getInstance().startApp(this, appId, splashClass, redirectPath, arguments)
     } catch (e: Exception) {
-        e(throwable = e)
+        e(tr = e)
         toast(msg = e.message)
     }
 }

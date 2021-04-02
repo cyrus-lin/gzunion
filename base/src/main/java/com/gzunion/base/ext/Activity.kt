@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
+import android.support.v7.app.AppCompatActivity
 import com.google.zxing.integration.android.IntentIntegrator
 import com.gzunion.base.BaseActivity
 import com.gzunion.base.ForResultCallback
@@ -39,4 +41,8 @@ fun BaseActivity.scanQrCode(cb: (String) -> Unit) {
             toast(res = R.string.user_cancel)
         }
     })
+}
+
+fun AppCompatActivity.requestPermissionsCompat(permissions: Array<String>, requestCode: Int) {
+    ActivityCompat.requestPermissions(this, permissions, requestCode)
 }

@@ -2,7 +2,9 @@ package com.gzunion.uniapp
 
 import android.content.Context
 import com.alibaba.fastjson.JSON
+import com.alibaba.fastjson.JSONObject
 import com.alibaba.fastjson.annotation.JSONField
+import com.gzunion.base.utils.e
 import io.dcloud.feature.sdk.DCUniMPJSCallback
 import io.dcloud.feature.sdk.DCUniMPSDK
 import java.lang.Exception
@@ -17,7 +19,7 @@ class EventHub(
         private val ctx: Context
 ): DCUniMPSDK.IOnUniMPEventCallBack {
 
-    private val mHandlers = ConcurrentHashMap<String, EventHandler>()
+    private val mHandlers = ConcurrentHashMap<String, EventHandler<Any>>()
     private val mThreadPool = Executors.newFixedThreadPool(4)
 
     override fun onUniMPEventReceive(event: String?, data: Any?, cb: DCUniMPJSCallback?) {
@@ -25,28 +27,34 @@ class EventHub(
             if (event == null)
                 return@submit
 
-            val h = mHandlers[event] ?: return@submit
-            val arg = runCatching { JSON.parseObject(data as? String, h.dataClz) }.getOrNull()
             try {
-                val data = h.process(ctx = ctx, arg = arg)
-                cb?.invoke(Response.success(data))
+                val h = mHandlers[event] ?: return@submit
+                val arg = if (h.dataClz != null) (data as? JSONObject)?.toJavaObject(h.dataClz) else null
+                val resp = try {
+                    val response = h.process(ctx = ctx, arg = arg, sdk = DCUniMPSDK.getInstance())
+                    Response.success(response)
+                } catch (e: Exception) {
+                    e(tr = e)
+                    Response.failure(e.message)
+                }
+                cb?.invoke(JSON.toJSONString(resp))
             } catch (e: Exception) {
-                cb?.invoke(Response.failure(e.message))
+                e(tr = e)
             }
         }
     }
 
-    fun registerHandler(handler: EventHandler) {
-        mHandlers[handler.eventName] = handler
+    fun registerHandler(handler: EventHandler<*>) {
+        mHandlers[handler.eventName] = handler as EventHandler<Any>
     }
 }
 
-abstract class EventHandler (
+abstract class EventHandler<T> (
         val eventName: String,
-        val dataClz: Class<Any>? = null
+        val dataClz: Class<T>? = null
 ) {
     @Throws(Exception::class)
-    abstract fun process(ctx: Context, arg: Any?): Any?
+    abstract fun process(ctx: Context, sdk: DCUniMPSDK, arg: T?): Any?
 }
 
 /**
@@ -77,4 +85,8 @@ data class Response(
             @JSONField(name = "message")
             val message: String? = null
     )
+
+    override fun toString(): String {
+        return "abc"
+    }
 }

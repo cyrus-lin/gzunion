@@ -1,6 +1,7 @@
 package com.gzunion.uniapp.ext
 
 import android.content.Context
+import com.gzunion.base.utils.e
 import io.dcloud.feature.sdk.DCUniMPSDK
 import java.io.File
 
@@ -57,5 +58,32 @@ fun DCUniMPSDK.uninstallApps(ctx: Context, appIds: List<String>) {
         try {
             File(dir, it).deleteRecursively()
         } catch (ignored: Exception) {}
+    }
+}
+
+/**
+ * 批量安装小程序，文件名作为 ID
+ * @param delAfterInstall 安装成功后是否删除文件
+ * @return 返回成功安装的数量
+ */
+fun DCUniMPSDK.installApps(ctx: Context, files: List<File>, delAfterInstall: Boolean = true) {
+    if (files.isEmpty())
+        return
+
+    val sdk = DCUniMPSDK.getInstance()
+    sdk.uninstallApps(ctx = ctx, appIds = files.map { it.nameWithoutExtension })
+
+    files.forEach {
+        try {
+            sdk.releaseWgtToRunPathFromePath(it.nameWithoutExtension, it.absolutePath) { i: Int, any: Any ->
+                if (i == 1) {   // 释放 wgt 成功
+                    if (delAfterInstall)
+                        it.delete()
+                } else {        // 释放 wgt 失败
+                }
+            }
+        } catch (e: Exception) {
+            e(tr = e)
+        }
     }
 }

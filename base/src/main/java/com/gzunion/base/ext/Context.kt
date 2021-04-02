@@ -28,3 +28,8 @@ fun Context.wxScan() {
         toast(msg = e.message)
     }
 }
+
+/**
+ * app 主 key-value 存储
+ */
+fun Context.appKv() = getSharedPreferences("app", Context.MODE_PRIVATE)

@@ -3,6 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.gzunion.app">
 
+    <!-- 微信登陆 start -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <!-- 微信登陆 end -->
+
+    <meta-data android:value="%appsecret%" android:name="WX_SECRET"/>
+    <meta-data android:value="%appid%" android:name="WX_APPID"/>
+    <activity android:name="%packagename%.wxapi.WXEntryActivity"
+        android:label="@string/app_name"
+        android:exported="true"
+        android:launchMode="singleTop"
+        android:theme="@android:style/Theme.Translucent.NoTitleBar">
+        <intent-filter>
+            <action android:name="android.intent.action.VIEW"/>
+            <category android:name="android.intent.category.DEFAULT"/>
+            <data android:scheme="%appid%"/>
+        </intent-filter>
+    </activity>
+
     <application
         android:allowBackup="true"
         android:allowClearUserData="true"
@@ -11,8 +29,11 @@
         android:supportsRtl="true"
         tools:replace="android:extractNativeLibs">
         <service
-            android:name="com.gzunion.uniapp.UpgradeService"
+            android:name="com.gzunion.uniapp.services.DiskInstallService"
             android:exported="false"></service>
+        <service
+            android:name="com.gzunion.uniapp.services.UpgradeService"
+            android:exported="false" />
 
         <activity android:name="com.gzunion.uniapp.test.TestActivity" />
 
@@ -44,6 +65,18 @@
                 <data android:scheme="h56131bcf" />
             </intent-filter>
         </activity>
+
+        <activity android:name="com.gzunion.uniapp.WXEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="%appid%"/>
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

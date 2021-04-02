@@ -1,7 +1,8 @@
-package com.gzunion.uniapp
+package com.gzunion.uniapp.services
 
 import android.app.IntentService
 import android.content.Intent
+import android.os.IBinder
 import com.gzunion.uniapp.ext.ProgramInfo
 import com.gzunion.uniapp.ext.installedApps
 import com.gzunion.uniapp.ext.uninstallApps
@@ -47,4 +48,7 @@ class UpgradeService : IntentService("UpgradeService") {
         }
     }
 
+    override fun onBind(intent: Intent?): IBinder? {
+        return super.onBind(intent)
+    }
 }

@@ -3,6 +3,9 @@ package com.gzunion.uniapp
 import android.app.Application
 import android.util.Log
 import com.gzunion.base.ApplicationLike
+import com.gzunion.uniapp.eventhandlers.NavigateToUniMP
+import com.gzunion.uniapp.eventhandlers.SyncToken
+import com.gzunion.uniapp.eventhandlers.WxScan
 import com.taobao.weex.WXSDKEngine
 import com.taobao.weex.common.WXException
 import io.dcloud.feature.sdk.DCSDKInitConfig
@@ -33,7 +36,12 @@ class UniappApplication : ApplicationLike {
         DCUniMPSDK.getInstance().initialize(app, config) { b ->
             Log.i("unimp", "onInitFinished----$b")
 
-
+            val eventHub = EventHub(app).apply {
+                registerHandler(WxScan())
+                registerHandler(SyncToken())
+                registerHandler(NavigateToUniMP())
+            }
+            DCUniMPSDK.getInstance().setOnUniMPEventCallBack(eventHub)
         }
         // 初始化 uni 小程序 SDK ---- end ----------
     }
