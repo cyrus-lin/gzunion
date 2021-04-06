@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ifanr.tangzhi.TestActivity"
+    tools:context="com.gzunion.app.com.ifanr.tangzhi.TestActivity"
     android:orientation="vertical">
 
     <Button
@@ -53,4 +53,11 @@
             android:text="打开小程序"
             />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/loginByWx"
+        android:text="微信登陆"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 </LinearLayout>

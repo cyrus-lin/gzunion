@@ -3,20 +3,32 @@ package com.gzunion.uniapp
 import android.app.Application
 import android.util.Log
 import com.gzunion.base.ApplicationLike
+import com.gzunion.uniapp.eventhandlers.LoginWithWechat
 import com.gzunion.uniapp.eventhandlers.NavigateToUniMP
 import com.gzunion.uniapp.eventhandlers.SyncToken
 import com.gzunion.uniapp.eventhandlers.WxScan
 import com.taobao.weex.WXSDKEngine
 import com.taobao.weex.common.WXException
+import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import io.dcloud.feature.sdk.DCSDKInitConfig
 import io.dcloud.feature.sdk.DCUniMPSDK
 import io.dcloud.feature.sdk.DCUniMPSDK.IDCUNIMPPreInitCallback
 import io.dcloud.feature.sdk.MenuActionSheetItem
 import java.util.*
 
+lateinit var APP: Application
+
+val WXAPI by lazy {
+    return@lazy WXAPIFactory.createWXAPI(APP, null).apply {
+        registerApp("wx0479d25aff361645")   // tangzhi wechat app id
+    }
+}
+
 class UniappApplication : ApplicationLike {
 
     override fun onCreate(app: Application) {
+        APP = app
+
         // 初始化 uni 小程序 SDK ---- start ----------
         val item = MenuActionSheetItem("关于", "gy")
         val item1 = MenuActionSheetItem("获取当前页面url", "hqdqym")
@@ -40,6 +52,7 @@ class UniappApplication : ApplicationLike {
                 registerHandler(WxScan())
                 registerHandler(SyncToken())
                 registerHandler(NavigateToUniMP())
+                registerHandler(LoginWithWechat())
             }
             DCUniMPSDK.getInstance().setOnUniMPEventCallBack(eventHub)
         }

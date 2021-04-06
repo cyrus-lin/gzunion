@@ -40,3 +40,7 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+String getEnv(String key) {
+    return System.getenv(key);
+}

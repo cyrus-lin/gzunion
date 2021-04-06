@@ -3,6 +3,7 @@ package com.gzunion.uniapp.services
 import android.app.IntentService
 import android.content.Intent
 import android.os.Environment
+import com.gzunion.base.utils.d
 import com.gzunion.base.utils.e
 import com.gzunion.uniapp.ext.installApps
 import io.dcloud.feature.sdk.DCUniMPSDK
@@ -23,6 +24,7 @@ class DiskInstallService : IntentService("DiskInstallService") {
                 val sdcard = Environment.getExternalStorageDirectory() ?: return
                 val files = sdcard.listFiles()?.filter { it.isFile && it.canRead() &&
                         it.absolutePath.endsWith(suffix = "wgt", ignoreCase = false) }
+                d(msg = "${files?.size} wgt in sdcard to be install")
                 if (files.isNullOrEmpty()) return
                 sdk.installApps(ctx = ctx, files = files)
             } catch (e: Exception) {

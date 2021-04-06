@@ -13,7 +13,7 @@
     <application
         android:hardwareAccelerated="true"
         >
-        <activity android:name="com.gzunion.app.TestActivity"></activity>
+        <activity android:name="com.ifanr.tangzhi.TestActivity"></activity>
 
         <!-- 二维码扫描页面竖屏显示 -->
         <activity android:name="com.journeyapps.barcodescanner.CaptureActivity"

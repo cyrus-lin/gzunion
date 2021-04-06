@@ -57,7 +57,9 @@ fun DCUniMPSDK.uninstallApps(ctx: Context, appIds: List<String>) {
     appIds.forEach {
         try {
             File(dir, it).deleteRecursively()
-        } catch (ignored: Exception) {}
+        } catch (e: Exception) {
+            e(tr = e)
+        }
     }
 }
 
@@ -80,6 +82,7 @@ fun DCUniMPSDK.installApps(ctx: Context, files: List<File>, delAfterInstall: Boo
                     if (delAfterInstall)
                         it.delete()
                 } else {        // 释放 wgt 失败
+                    e(tr = Exception("释放 wgt 失败，${it.absolutePath}，$any"))
                 }
             }
         } catch (e: Exception) {

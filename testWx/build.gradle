@@ -1,0 +1,85 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+}
+
+android {
+    compileSdkVersion compileSdkVer
+    buildToolsVersion buildToolsVer
+
+    defaultConfig {
+        applicationId 'com.ifanr.tangzhi'
+        minSdkVersion minSdkVer
+        targetSdkVersion targetSdkVer
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        ndk {
+            abiFilters 'armeabi-v7a'  // 腾讯 X5 内核仅支持 armeabi-v7a
+        }
+    }
+
+    signingConfigs {
+        release {
+            keyAlias getEnv("TANGZHI_KEY_ALIAS")
+            keyPassword getEnv("TANGZHI_KEY_PASSWORD")
+            storeFile file(getEnv("TANGZHI_STORE_FILE"))
+            storePassword getEnv("TANGZHI_STORE_PASSWORD")
+            v2SigningEnabled true
+            v1SigningEnabled true
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    // 此处配置必须添加 否则无法正确运行
+    aaptOptions {
+        additionalParameters '--auto-add-overlay'
+        // noCompress 'foo', 'bar'
+        ignoreAssetsPattern "!.svn:!.git:.*:!CVS:!thumbs.db:!picasa.ini:!*.scc:*~"
+    }
+}
+
+//导入aar需要的配置
+repositories {
+    flatDir {
+        dirs '../libs'
+    }
+}
+
+dependencies {
+
+    //导入SDK相关依赖jar、aar
+    implementation fileTree(include: ['*.jar'], dir: '../libs')
+    implementation fileTree(include: ['*.aar'], dir: '../libs')
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVer"
+    implementation "com.android.support.constraint:constraint-layout:$constraintLayoutVer"
+    implementation "com.android.support:multidex:$multiDexVer"
+    implementation(project(":uniapp"))
+    implementation(project(":base"))
+
+}
